@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="dev">
+            <group id="debug">
+                <field id="layout_debugger_dump_enabled_frontend" translate="label" type="select" sortOrder="200" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable Layout Debugging Dump On Storefront</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="layout_debugger_dump_enabled_adminhtml" translate="label" type="select" sortOrder="205" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable Layout Debugging Dump on Admin</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="layout_debugger_comments_enabled_frontend" translate="label" type="select" sortOrder="210" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable Layout Debugging Inline Comments On Storefront</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="layout_debugger_comments_enabled_adminhtml" translate="label" type="select" sortOrder="215" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable Layout Debugging Inline Comments on Admin</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

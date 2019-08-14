@@ -1,0 +1,23 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+?>
+
+<div class="layout-debugger-window open">
+    <button class="btn">X</button>
+    <div class="content">
+        <a href="javascript:" class="fullscreen-toggle">view fullscreen</a>
+        <h4 class="title">Layout Dump</h4>
+        <div><strong>Handles:</strong> <?=$block->escapeHtml(implode(', ', $block->getData('handles') ?? ''))?></div>
+        <div><strong>Page Layout:</strong> <?=$block->escapeHtml($block->getData('pageLayout'))?></div>
+        <div class="layout-debugger-dump simpleXML">
+            <?=$block->escapeHtml($block->getData('serializedLayout'))?>
+        </div>
+    </div>
+</div>
+<script type="text/x-magento-init">
+    {
+        ".layout-debugger-window": {
+            "Nathanjosiah_LayoutDebugger/js/dump": {}
+        }
+    }
+</script>
