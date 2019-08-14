@@ -9,7 +9,7 @@ Officially supports Magento 2.2.0+
 
 **Download it**
 ```bash
-composer require nathanjosiah/magento2-layout-debugger
+composer require nathanjosiah/magento2-layout-debugger:dev-master
 ```
 
 **Register it with Magento**
