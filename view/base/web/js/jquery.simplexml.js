@@ -1,4 +1,4 @@
-﻿(function ($) {
+﻿﻿(function ($) {
 
     // Additional features that are needed
     //

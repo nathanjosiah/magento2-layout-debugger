@@ -23,8 +23,13 @@ define([
             }
         );
 
+        if (localStorage.layoutDebuggerOpen === 'true') {
+            $window.toggleClass('open');
+        }
+
         $window.find('.btn').on('click', function () {
             $window.toggleClass('open');
+            localStorage.layoutDebuggerOpen = (localStorage.layoutDebuggerOpen === 'false' ? 'true' : 'false');
         });
 
         $fullscreenToggle.on('click', function () {

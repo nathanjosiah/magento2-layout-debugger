@@ -6,18 +6,20 @@
 
 declare(strict_types=1);
 
-namespace Nathanjosiah\LayoutDebugger\Plugin;
+namespace Nathanjosiah\LayoutDebugger\Observer;
 
 use Magento\Framework\App\Area;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\State;
+use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\View\Layout\Data\Structure;
 use Nathanjosiah\LayoutDebugger\Model\OpenLayout;
 
 /**
  *
  */
-class InlineCommentsPlugin
+class InlineCommentsObserver implements ObserverInterface
 {
     /**
      * @var Structure
@@ -40,14 +42,23 @@ class InlineCommentsPlugin
         $this->appState = $appState;
     }
 
-    public function aroundRenderNonCachedElement(OpenLayout $subject, \Closure $next, $name)
+    public function execute(Observer $observer)
     {
         if ($this->appState->getAreaCode() === Area::AREA_FRONTEND
             && !$this->config->getValue('dev/debug/layout_debugger_comments_enabled_frontend')
             || $this->appState->getAreaCode() === Area::AREA_ADMINHTML
             && !$this->config->getValue('dev/debug/layout_debugger_comments_enabled_adminhtml')
         ) {
-            return $next($name);
+            return;
+        }
+
+        $event = $observer->getEvent();
+        $subject = $event->getDataByKey('layout');
+        $name = $event->getDataByKey('element_name');
+        $transport = $event->getDataByKey('transport');
+
+        if (!$subject instanceof OpenLayout) {
+            return;
         }
 
         if (!$this->structure) {
@@ -55,14 +66,14 @@ class InlineCommentsPlugin
         }
 
         $element = $this->structure->getElement($name);
-        $output = $next($name);
+        $output = $transport->getData('output');
 
         if ($output) {
-            $output = "<!-- layout: {$name} ::: {$element['type']} ::: parent {$this->structure->getParentId($name)} -->{$output}<!-- {$name} | end -->\n";
+            $output = "<!--{$name} type=\"{$element['type']}\" parent=\"{$this->structure->getParentId($name)}\"-->{$output}<!--/{$name}-->\n";
         } else {
-            $output = "<!-- layout: {$name} ::: {$element['type']} ::: parent {$this->structure->getParentId($name)} | (no children) -->\n";
+            $output = "<!--{$name} type=\"{$element['type']}\" parent=\"{$this->structure->getParentId($name)}\"/-->\n";
         }
 
-        return $output;
+        $transport->setData('output', $output);
     }
 }
