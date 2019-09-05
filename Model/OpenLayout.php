@@ -127,11 +127,14 @@ class OpenLayout extends Layout
             $node->setAttribute('display', $element['display']);
         }
 
-        if ($element['type'] === 'block'
-            && $this->_blocks[$name] instanceof Template
-            && $this->_blocks[$name]->getTemplate()
-        ) {
-            $node->setAttribute('template', $this->_blocks[$name]->getTemplate());
+        if ($element['type'] === 'block') {
+            $node->setAttribute('class', get_class($this->_blocks[$name]));
+
+            if ($this->_blocks[$name] instanceof Template
+                && $this->_blocks[$name]->getTemplate()
+            ) {
+                $node->setAttribute('template', $this->_blocks[$name]->getTemplate());
+            }
         }
 
         foreach ($children as $childName => $alias) {
