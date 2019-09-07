@@ -6,4 +6,7 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Magento\Framework\View\LayoutInterface" type="Nathanjosiah\LayoutDebugger\Model\OpenLayout"/>
+    <type name="Magento\Widget\Model\Template\Filter">
+        <plugin name="layout_debugger_inline_comments" type="Nathanjosiah\LayoutDebugger\Model\WidgetPlugin" sortOrder="10000" />
+    </type>
 </config>
