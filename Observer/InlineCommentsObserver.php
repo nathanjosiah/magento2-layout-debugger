@@ -10,10 +10,12 @@ namespace Nathanjosiah\LayoutDebugger\Observer;
 
 use Magento\Framework\App\Area;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\State;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\View\Layout\Data\Structure;
+use Nathanjosiah\LayoutDebugger\Model\DebuggerConfig;
 use Nathanjosiah\LayoutDebugger\Model\OpenLayout;
 
 /**
@@ -35,20 +37,27 @@ class InlineCommentsObserver implements ObserverInterface
      * @var State
      */
     private $appState;
+    /**
+     * @var DebuggerConfig
+     */
+    private $debuggerConfig;
 
-    public function __construct(ScopeConfigInterface $config, State $appState)
+    /**
+     * InlineCommentsObserver constructor.
+     * @param ScopeConfigInterface $config
+     * @param State $appState
+     * @param DebuggerConfig $debuggerConfig
+     */
+    public function __construct(ScopeConfigInterface $config, State $appState, DebuggerConfig $debuggerConfig)
     {
         $this->config = $config;
         $this->appState = $appState;
+        $this->debuggerConfig = $debuggerConfig ?? ObjectManager::getInstance()->get(DebuggerConfig::class);
     }
 
     public function execute(Observer $observer)
     {
-        if ($this->appState->getAreaCode() === Area::AREA_FRONTEND
-            && !$this->config->getValue('dev/debug/layout_debugger_comments_enabled_frontend')
-            || $this->appState->getAreaCode() === Area::AREA_ADMINHTML
-            && !$this->config->getValue('dev/debug/layout_debugger_comments_enabled_adminhtml')
-        ) {
+        if (!$this->debuggerConfig->isCommentsEnabled()) {
             return;
         }
 

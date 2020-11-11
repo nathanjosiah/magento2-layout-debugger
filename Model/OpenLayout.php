@@ -36,7 +36,31 @@ class OpenLayout extends Layout
      * @var Config
      */
     private $pageConfig;
+    /**
+     * @var DebuggerConfig
+     */
+    private $debuggerConfig;
 
+    /**
+     * OpenLayout constructor.
+     * @param Layout\ProcessorFactory $processorFactory
+     * @param ManagerInterface $eventManager
+     * @param Layout\Data\Structure $structure
+     * @param MessageManagerInterface $messageManager
+     * @param Design\Theme\ResolverInterface $themeResolver
+     * @param Layout\ReaderPool $readerPool
+     * @param Layout\GeneratorPool $generatorPool
+     * @param FrontendInterface $cache
+     * @param Layout\Reader\ContextFactory $readerContextFactory
+     * @param Layout\Generator\ContextFactory $generatorContextFactory
+     * @param AppState $appState
+     * @param Logger $logger
+     * @param bool $cacheable
+     * @param SerializerInterface|null $serializer
+     * @param ScopeConfigInterface|null $config
+     * @param Config|null $pageConfig
+     * @param DebuggerConfig|null $debuggerConfig
+     */
     public function __construct(
         Layout\ProcessorFactory $processorFactory,
         ManagerInterface $eventManager,
@@ -53,7 +77,8 @@ class OpenLayout extends Layout
         bool $cacheable = true,
         ?SerializerInterface $serializer = null,
         ScopeConfigInterface $config = null,
-        Config $pageConfig = null
+        Config $pageConfig = null,
+        DebuggerConfig $debuggerConfig = null
     ) {
         parent::__construct(
             $processorFactory,
@@ -73,15 +98,12 @@ class OpenLayout extends Layout
         );
         $this->config = $config ?? ObjectManager::getInstance()->get(ScopeConfigInterface::class);
         $this->pageConfig = $pageConfig ?? ObjectManager::getInstance()->get(Config::class);
+        $this->debuggerConfig = $debuggerConfig ?? ObjectManager::getInstance()->get(DebuggerConfig::class);
     }
 
     public function getOutput()
     {
-        if ($this->appState->getAreaCode() === Area::AREA_FRONTEND
-            && !$this->config->getValue('dev/debug/layout_debugger_dump_enabled_frontend')
-            || $this->appState->getAreaCode() === Area::AREA_ADMINHTML
-            && !$this->config->getValue('dev/debug/layout_debugger_dump_enabled_adminhtml')
-        ) {
+        if (!$this->debuggerConfig->isDumpEnabled()) {
             return parent::getOutput();
         }
 

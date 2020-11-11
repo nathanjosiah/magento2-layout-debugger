@@ -9,9 +9,6 @@ declare(strict_types=1);
 namespace Nathanjosiah\LayoutDebugger\Model;
 
 use Magento\Cms\Model\Template\Filter;
-use Magento\Framework\App\Area;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\State;
 
 /**
  *
@@ -19,29 +16,22 @@ use Magento\Framework\App\State;
 class WidgetPlugin
 {
     /**
-     * @var State
+     * @var DebuggerConfig
      */
-    private $appState;
-    /**
-     * @var ScopeConfigInterface
-     */
-    private $config;
+    private $debuggerConfig;
 
-    public function __construct(
-        State $appState,
-        ScopeConfigInterface $config
-    ) {
-        $this->appState = $appState;
-        $this->config = $config;
+    /**
+     * WidgetPlugin constructor.
+     * @param DebuggerConfig $debuggerConfig
+     */
+    public function __construct(DebuggerConfig $debuggerConfig)
+    {
+        $this->debuggerConfig = $debuggerConfig;
     }
 
     public function afterWidgetDirective(Filter $subject, $result, $construction)
     {
-        if ($this->appState->getAreaCode() === Area::AREA_FRONTEND
-            && !$this->config->getValue('dev/debug/layout_debugger_widget_comments_enabled')
-            || $this->appState->getAreaCode() === Area::AREA_ADMINHTML
-            && !$this->config->getValue('dev/debug/layout_debugger_widget_comments_enabled')
-        ) {
+        if (!$this->debuggerConfig->isWidgetCommentsEnabled()) {
             return $result;
         }
 

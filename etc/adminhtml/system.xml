@@ -30,6 +30,11 @@
                     <comment>This may affect rendering as some widgets are inside HTML attributes.</comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="layout_debugger_template_hints" translate="label" type="select" sortOrder="250" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable Template Helper Comments</label>
+                    <comment>This may affect rendering in some cases depending on how a template is used.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
             </group>
         </section>
     </system>

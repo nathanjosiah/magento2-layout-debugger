@@ -9,4 +9,7 @@
     <type name="Magento\Widget\Model\Template\Filter">
         <plugin name="layout_debugger_inline_comments" type="Nathanjosiah\LayoutDebugger\Model\WidgetPlugin" sortOrder="10000" />
     </type>
+    <type name="Magento\Framework\View\TemplateEngineInterface">
+        <plugin name="layout_debugger_template_helper" type="Nathanjosiah\LayoutDebugger\Plugin\TemplateEnginePlugin" sortOrder="10000" />
+    </type>
 </config>
